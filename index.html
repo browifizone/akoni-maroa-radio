@@ -510,7 +510,11 @@
   .dock-bar{
     display:flex; align-items:center; gap:18px;
     padding:20px 22px;
+    cursor:grab;
+    touch-action:none;
   }
+  .dock-bar:active{ cursor:grabbing; }
+  .player-dock.dragging{ transition:none !important; }
   .dock-art{
     position:relative; flex-shrink:0;
     width:72px; height:72px;
@@ -984,6 +988,76 @@
     });
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Lecteur déplaçable : on peut le faire glisser n'importe où sur la page,
+  // sa position est retenue d'une visite à l'autre.
+  (function makeDockDraggable(){
+    const dockEl = document.getElementById('playerDock');
+    const handle = dockEl.querySelector('.dock-bar');
+    let dragging = false;
+    let startX, startY, startLeft, startTop;
+    const STORAGE_KEY = 'akoniMaroaPlayerPos';
+
+    function applyPosition(left, top){
+      const maxLeft = window.innerWidth - dockEl.offsetWidth - 8;
+      const maxTop = window.innerHeight - dockEl.offsetHeight - 8;
+      left = Math.min(Math.max(8, left), Math.max(8, maxLeft));
+      top = Math.min(Math.max(8, top), Math.max(8, maxTop));
+      dockEl.style.left = left + 'px';
+      dockEl.style.top = top + 'px';
+      dockEl.style.right = 'auto';
+      dockEl.style.bottom = 'auto';
+    }
+
+    // Restaure la position sauvegardée, si elle existe
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if(saved && typeof saved.left === 'number' && typeof saved.top === 'number'){
+        applyPosition(saved.left, saved.top);
+      }
+    } catch(e){ /* pas grave si absent ou invalide */ }
+
+    function onPointerDown(e){
+      // Ignore les clics sur les vrais boutons pour ne pas gêner play/pause
+      if(e.target.closest('.dock-play')) return;
+      dragging = true;
+      dockEl.classList.add('dragging');
+      const rect = dockEl.getBoundingClientRect();
+      startX = e.clientX;
+      startY = e.clientY;
+      startLeft = rect.left;
+      startTop = rect.top;
+      handle.setPointerCapture(e.pointerId);
+    }
+    function onPointerMove(e){
+      if(!dragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      applyPosition(startLeft + dx, startTop + dy);
+    }
+    function onPointerUp(){
+      if(!dragging) return;
+      dragging = false;
+      dockEl.classList.remove('dragging');
+      const rect = dockEl.getBoundingClientRect();
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ left: rect.left, top: rect.top }));
+      } catch(e){ /* stockage indisponible, tant pis */ }
+    }
+
+    handle.addEventListener('pointerdown', onPointerDown);
+    handle.addEventListener('pointermove', onPointerMove);
+    handle.addEventListener('pointerup', onPointerUp);
+    handle.addEventListener('pointercancel', onPointerUp);
+
+    // Garde le lecteur dans l'écran si la fenêtre est redimensionnée
+    window.addEventListener('resize', () => {
+      const rect = dockEl.getBoundingClientRect();
+      if(dockEl.style.left && dockEl.style.left !== 'auto'){
+        applyPosition(rect.left, rect.top);
+      }
+    });
+  })();
 </script>
 
 </body>
