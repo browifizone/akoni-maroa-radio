@@ -20,6 +20,7 @@
     --panel:#191919;
     --hair:#3a3a3a;
     --paper-dim:#d9d2bf;
+    --gold:#E8A33D;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
@@ -495,15 +496,15 @@
     width:400px;
     max-width:calc(100vw - 32px);
     background:var(--panel);
-    border:1px solid var(--hair);
+    border:2px solid var(--gold);
     border-radius:20px;
-    box-shadow:0 24px 60px rgba(0,0,0,0.55);
+    box-shadow:0 24px 60px rgba(0,0,0,0.55), 0 0 16px rgba(232,163,61,0.45);
     overflow:hidden;
-    animation:dockAttention 1.6s ease-in-out 3;
+    animation:dockAttention 2.4s ease-in-out infinite;
   }
   @keyframes dockAttention{
-    0%,100%{ box-shadow:0 24px 60px rgba(0,0,0,0.55); }
-    50%{ box-shadow:0 24px 60px rgba(0,0,0,0.55), 0 0 0 8px rgba(226,36,28,0.25); }
+    0%,100%{ box-shadow:0 24px 60px rgba(0,0,0,0.55), 0 0 16px rgba(232,163,61,0.45); }
+    50%{ box-shadow:0 24px 60px rgba(0,0,0,0.55), 0 0 30px rgba(232,163,61,0.85); }
   }
 
   .dock-bar{
