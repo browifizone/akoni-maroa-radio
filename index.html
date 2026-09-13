@@ -127,10 +127,34 @@
     gap:40px;
     align-items:center;
   }
-  .freq{
-    font-size:clamp(4.5rem, 13vw, 9rem);
-    color:var(--red);
-    display:block;
+  .location-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'Work Sans', sans-serif;
+    font-weight:700;
+    font-size:0.9rem;
+    letter-spacing:0.6px;
+    text-transform:uppercase;
+    color:var(--paper);
+    background:rgba(226,36,28,0.12);
+    border:1px solid var(--red);
+    padding:8px 18px;
+    border-radius:30px;
+    margin-bottom:18px;
+    text-shadow:0 0 8px rgba(226,36,28,0.9), 0 0 18px rgba(226,36,28,0.6);
+    box-shadow:0 0 12px rgba(226,36,28,0.45), inset 0 0 12px rgba(226,36,28,0.15);
+    animation:locationGlow 2.4s ease-in-out infinite;
+  }
+  @keyframes locationGlow{
+    0%,100%{
+      box-shadow:0 0 12px rgba(226,36,28,0.45), inset 0 0 12px rgba(226,36,28,0.15);
+      text-shadow:0 0 8px rgba(226,36,28,0.9), 0 0 18px rgba(226,36,28,0.6);
+    }
+    50%{
+      box-shadow:0 0 22px rgba(226,36,28,0.75), inset 0 0 18px rgba(226,36,28,0.3);
+      text-shadow:0 0 14px rgba(226,36,28,1), 0 0 28px rgba(226,36,28,0.85);
+    }
   }
   .hero h1{
     font-size:clamp(1.8rem, 5vw, 3.1rem);
@@ -579,7 +603,7 @@
 
   :focus-visible{outline:2px solid var(--red); outline-offset:2px;}
   @media (prefers-reduced-motion: reduce){
-    .disc, .led, .hero-cta .dot, .dock-eq span, .dock-art img, .ticker-track, .player-dock{animation:none !important;}
+    .disc, .led, .hero-cta .dot, .dock-eq span, .dock-art img, .ticker-track, .player-dock, .location-badge{animation:none !important;}
     .reveal{opacity:1 !important; transform:none !important; transition:none !important;}
   }
 </style>
@@ -618,7 +642,7 @@
   <section class="hero" id="accueil">
     <div class="wrap hero-grid">
       <div>
-        <span class="freq display">103FM</span>
+        <span class="location-badge">📍 En direct de Maroantsetra</span>
         <h1>Akon'i Maroa, la voix qui rassemble Maroa.</h1>
         <p class="tagline">Musique, actualités locales et talk-shows, en malgache et en français, du lever au coucher du soleil. Chaque jour avec vous, où que vous soyez.</p>
         <button class="hero-cta" id="heroPlay">
