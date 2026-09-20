@@ -566,6 +566,77 @@
   form button:hover{background:#c11b14;}
   @media (max-width:820px){ .contact-grid{grid-template-columns:1fr;} }
 
+  /* ---------- APPLICATION ANDROID ---------- */
+  #application{ border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); }
+  .app-grid{
+    display:grid;
+    grid-template-columns:0.8fr 1.2fr;
+    gap:56px;
+    align-items:center;
+  }
+  .app-visual{ display:flex; justify-content:center; }
+  .phone{
+    position:relative;
+    width:min(230px, 60vw);
+    aspect-ratio:9 / 18.5;
+    border-radius:34px;
+    background:var(--paper);
+    padding:10px;
+    box-shadow:0 26px 50px rgba(22,36,27,0.28);
+  }
+  .phone::before{
+    content:''; position:absolute; top:16px; left:50%;
+    width:56px; height:6px; border-radius:6px;
+    background:#0e1712; transform:translateX(-50%); z-index:1;
+  }
+  .phone-screen{
+    height:100%;
+    border-radius:26px;
+    background:#FFFFFF;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:12px; text-align:center;
+    padding:30px 14px 22px;
+  }
+  .phone-logo{ width:92%; height:auto; display:block; }
+  .phone-freq{ font-family:'Anton', sans-serif; font-size:1.5rem; letter-spacing:1px; color:var(--red); }
+  .phone-status{ font-size:0.8rem; color:var(--paper-dim); }
+  .phone-play{
+    width:58px; height:58px; border-radius:50%;
+    background:var(--red); color:#FFFFFF;
+    display:grid; place-items:center; font-size:1.3rem;
+    box-shadow:0 8px 18px rgba(226,36,28,0.4);
+    margin-top:6px;
+  }
+  .app-text p{ max-width:56ch; color:var(--paper-dim); margin-bottom:8px; }
+  .app-points{
+    list-style:none;
+    display:grid; gap:10px;
+    margin:22px 0 30px;
+  }
+  .app-points li{ position:relative; padding-left:28px; color:var(--paper); }
+  .app-points li::before{
+    content:'✓'; position:absolute; left:0; top:0;
+    color:var(--green); font-weight:700;
+  }
+  .app-download{
+    display:inline-flex; align-items:center; gap:12px;
+    background:var(--red); color:#FFFFFF;
+    padding:16px 26px;
+    font-family:'Anton', sans-serif; font-size:1.05rem; letter-spacing:0.5px;
+    text-decoration:none;
+    transition:background 0.2s;
+  }
+  .app-download:hover{ background:#c11b14; }
+  .app-download[aria-disabled="true"]{ background:#9aa5a0; cursor:not-allowed; }
+  .app-note{ font-size:0.88rem; color:var(--paper-dim); margin-top:14px; max-width:56ch; }
+  .app-help{ margin-top:24px; border-top:1px solid var(--hair); padding-top:16px; max-width:60ch; }
+  .app-help summary{ cursor:pointer; font-weight:600; color:var(--paper); }
+  .app-help ol{ margin:12px 0 0 20px; display:grid; gap:8px; color:var(--paper-dim); }
+  @media (max-width:820px){
+    .app-grid{ grid-template-columns:1fr; gap:36px; }
+    .app-visual{ order:2; }
+  }
+
   footer{
     border-top:1px solid var(--hair);
     padding:36px 0 140px;
@@ -717,6 +788,7 @@
       <a href="#accueil">Accueil</a>
       <a href="#programme">Programme</a>
       <a href="#apropos">À propos</a>
+      <a href="#application">Application</a>
       <a href="#contact">Contact</a>
     </div>
   </nav>
@@ -867,6 +939,42 @@
   </section>
   <div class="zigzag" style="--zz:var(--panel);"></div>
 
+  <section id="application">
+    <div class="wrap app-grid reveal">
+      <div class="app-visual" aria-hidden="true">
+        <div class="phone">
+          <div class="phone-screen">
+            <img class="phone-logo" id="phoneLogo" alt="">
+            <div class="phone-freq">103.0 FM</div>
+            <div class="phone-status">En direct</div>
+            <div class="phone-play">▶</div>
+          </div>
+        </div>
+      </div>
+      <div class="app-text">
+        <div class="section-head">
+          <h2>Application Android</h2>
+        </div>
+        <p>Emportez Akon'i Maroa dans votre poche : écoutez la radio en direct depuis votre téléphone, sans ouvrir le navigateur.</p>
+        <ul class="app-points">
+          <li>Un seul bouton pour écouter le direct</li>
+          <li>La radio continue quand vous quittez l'application ou verrouillez l'écran</li>
+          <li>Commandes dans la notification, pause automatique pendant un appel</li>
+        </ul>
+        <a class="app-download" id="apkBtn" aria-disabled="true"><span id="apkLabel">Bientôt disponible</span></a>
+        <p class="app-note" id="apkNote">L'application arrive très bientôt.</p>
+        <details class="app-help">
+          <summary>Comment l'installer ?</summary>
+          <ol>
+            <li>Appuyez sur « Télécharger l'application », puis ouvrez le fichier <strong>akoni-maroa.apk</strong> une fois téléchargé.</li>
+            <li>Si Android le demande, autorisez l'installation depuis ce navigateur (option « Installer des applications inconnues »).</li>
+            <li>Appuyez sur « Installer ». Si Google Play Protect affiche un avertissement, choisissez « Installer quand même » : l'application ne vient pas encore du Play Store.</li>
+          </ol>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <section id="contact">
     <div class="wrap contact-grid reveal">
       <div>
@@ -957,6 +1065,12 @@
   // Service d'envoi du formulaire de contact (ex. Formspree : "https://formspree.io/f/xxxxxxxx").
   // Tant que c'est vide, le formulaire dit honnêtement qu'il n'est pas encore actif.
   const FORM_ENDPOINT = "";
+
+  // Application Android : nom du fichier .apk envoyé sur GitHub à côté de index.html (ex. "akoni-maroa.apk").
+  // Tant que c'est vide, le bouton affiche « Bientôt disponible ».
+  const APK_URL = "";
+  // À changer à chaque nouvelle version de l'application (force les téléphones à télécharger la dernière).
+  const APK_VERSION = "1.0";
   // ============================================================================
 
   const $ = (id) => document.getElementById(id);
@@ -1311,6 +1425,26 @@
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePlay(); }
   });
   setArm(ARM_REST, false);
+
+  // ---------- Section « Application Android » ----------
+  (function setupAppSection(){
+    const btn = $('apkBtn'), label = $('apkLabel'), note = $('apkNote'), phoneLogo = $('phoneLogo');
+    if (phoneLogo) phoneLogo.src = discLogo.src; // même image que le disque : pas de doublon de données
+    if (!btn) return;
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (APK_URL) {
+      btn.href = APK_URL + '?v=' + encodeURIComponent(APK_VERSION);
+      btn.setAttribute('download', '');
+      btn.removeAttribute('aria-disabled');
+      label.textContent = 'Télécharger l\'application';
+      note.textContent = 'Version ' + APK_VERSION + ' · pour Android 7.0 et plus.';
+    } else {
+      btn.addEventListener('click', (e) => e.preventDefault());
+    }
+    if (APK_URL && !isAndroid) {
+      note.textContent += ' Pour l\'installer, ouvrez cette page depuis votre téléphone Android. Sur iPhone, écoutez directement sur ce site.';
+    }
+  })();
 
   // ---------- Volet « À venir » ----------
   const playerDock = $('playerDock');
